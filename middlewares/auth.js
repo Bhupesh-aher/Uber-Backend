@@ -1,12 +1,18 @@
 const User = require("../models/user")
 const bcrypt = require("bcrypt")
-const jwt = require("jsonwebtoken")
+const jwt = require("jsonwebtoken");
 
 module.exports.userAuth = async(req, res, next) => {
  
-    const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[ 1 ];
     if(!token){
         return res.status(401).json("please login")
+    }
+
+    const isBlockListed = await User.findOne({token: token})
+
+    if(isBlockListed){
+        return res.status(401).json({message: "Unauthorized"})
     }
 
     try{

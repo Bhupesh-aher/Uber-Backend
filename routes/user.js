@@ -22,7 +22,7 @@ userRouter.post("/login", [
 userRouter.get("/profile", auth.userAuth, userController.getUserProfile)
 
 
-
+userRouter.get("/logout", auth.userAuth, userController.logoutUser)
 
 
 
