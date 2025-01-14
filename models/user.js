@@ -41,15 +41,28 @@ userSchema.methods.generateAuthToken = async function () {
     return token;
 }
 
+
+
+
+
 userSchema.statics.hashPassword = async function (password) {
     return await bcrypt.hash(password, 10)
 }
+
+
+
+
+
 
 userSchema.methods.comaprePassword = async function (passwordInputByUser) {
     const user = this;
     const passwordHash = user.password;
     return await bcrypt.compare(passwordInputByUser, passwordHash)
 }
+
+
+
+
 
 const User = mongoose.model("User", userSchema);
 

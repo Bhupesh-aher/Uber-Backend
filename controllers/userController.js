@@ -25,3 +25,36 @@ module.exports.registerUser = async(req, res, next) => {
 
 
 }
+
+
+module.exports.loginUser = async(req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()){
+        return res.status(400).json({errors: errors.array()});
+    }
+
+    const {email, password} = req.body;
+    const user = await User.findOne({email}).select("+password");
+
+    if(!user){
+        return res.status(401).json({message: "Inavalid credentails"});
+    }
+
+    const isPasswordValid = await user.comaprePassword(password)
+
+    if(!isPasswordValid){
+        return res.status(401).json({message: "wrong password"})
+    }
+
+
+    const token = await user.generateAuthToken();
+
+    res.cookie('token', token);
+    res.json({token, user});
+}
+
+
+
+module.exports.getUserProfile =async(req, res, next) => {
+    res.json(req.user)
+}
