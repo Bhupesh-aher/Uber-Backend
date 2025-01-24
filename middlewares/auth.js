@@ -28,10 +28,10 @@ module.exports.userAuth = async(req, res, next) => {
 
         req.user = user;
         
-        next();
+       return next();
     }
     catch(err){
-        res.status(401).send("Error : " + err.message);
+        res.status(401).json({message: "Unauthorized"});
         
     }
 }
@@ -59,10 +59,10 @@ module.exports.captainAuth = async(req, res, next) => {
 
         req.captain = captain;
         
-        next();
+       return next();
     }
     catch(err){
-        res.status(401).send("Error : " + err.message);
+        res.status(401).json({message : "Unauthorized"});
         
     }
 }

@@ -62,21 +62,21 @@ module.exports.logInCaptain = async(req, res, next) => {
     const token = await captain.genrateAuthToken();
 
     res.cookie('token', token);
-    res.json({token, captain})
+    res.status(200).json({token, captain})
 }
 
 
 module.exports.getCaptainProfile = async(req, res, next) => {
-    res.json({captain: req.captain})
+    res.status(200).json({captain: req.captain})
 }
 
 module.exports.logOutCaptain = async(req, res, next) => {
-    const token = req.cookies.token || req.headers.authorization.split(' ')[ 1 ];
+    const token = req.cookies.token || req.headers.authorization?.split(' ')[ 1 ];
 
     await BlackListToken.create({token})
     
     res.clearCookie('token');  
 
-    res.json({message: "Logout Successfully"})
+    res.status(200).json({message: "Logout Successfully"})
 
 }

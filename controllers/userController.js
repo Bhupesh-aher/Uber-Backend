@@ -10,11 +10,14 @@ module.exports.registerUser = async(req, res, next) => {
     }
 
     const {fullname, email, password} = req.body;
+    
 
-    const isUserAlreadyExists = User.findOne({email});
-    if(isUserAlreadyExists){
-        return res.status(400).json({message: "User Already Exist"});
-    }
+    // const isUserAlreadyExists = User.findOne({email: email});
+    
+    // if(isUserAlreadyExists){
+    //     return res.status(400).json({message: "User Already Exist"});
+        
+    // }
 
 
     const hashPassword = await User.hashPassword(password)
@@ -28,7 +31,7 @@ module.exports.registerUser = async(req, res, next) => {
 
     const token = await user.generateAuthToken();
     
-    res.json({token, user})
+    res.status(201).json({token, user})
 
 
 }
@@ -72,5 +75,5 @@ module.exports.logoutUser = async(req, res, next) => {
 
     await BlackListToken.create({token})
 
-    res.json({message : "Logout Successfully"})
+    res.status(200).json({message : "Logout Successfully"})
 }
