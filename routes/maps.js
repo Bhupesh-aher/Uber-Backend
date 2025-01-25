@@ -15,8 +15,12 @@ mapsRouter.get("/get-distance-time",
     query('destination').isString().isLength({min: 3}),
     auth.userAuth,
     mapController.getDistanceTime
+)
 
-
- )
+mapsRouter.get("/get-suggestions", 
+    query("input").isString().isLength({min: 3}),
+    auth.userAuth,
+    mapController.getAutoCompleteSuggestions
+)
 
 module.exports = mapsRouter;

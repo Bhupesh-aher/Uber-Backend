@@ -51,3 +51,27 @@ module.exports.getDistanceTime = async(origin, destination) => {
         
     }
 }
+
+module.exports.getAutoCompleteSuggestions = async(input) => {
+    if(!input){
+        throw new Error('Query is required')
+    }
+
+    const apikey = process.env.GOOGLE_MAPS_API;
+    const url = `https://maps.gomaps.pro/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&key=${apikey}`
+
+    try{
+        const response = await axios.get(url)
+        if(response.data.status === "OK"){
+            return response.data.predictions;
+        }
+        else{
+            throw new Error("Unable to fetch suggestions")
+        }
+    }
+    catch(err){
+        console.log(err);
+        throw err;
+        
+    }
+}
