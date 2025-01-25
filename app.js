@@ -6,6 +6,7 @@ const app = express();
 const cookieParser = require("cookie-parser")
 const userRoutes = require("./routes/user")
 const captainRoutes = require("./routes/captain")
+const mapsRouter = require("./routes/maps")
 
 
 app.use(cors());
@@ -19,5 +20,6 @@ app.get("/", (req, res) => {
 
 app.use("/users", userRoutes)
 app.use("/captains", captainRoutes)
+app.use("/maps", mapsRouter)
 
 module.exports = app;
