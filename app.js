@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser")
 const userRoutes = require("./routes/user")
 const captainRoutes = require("./routes/captain")
 const mapsRouter = require("./routes/maps")
+const rideRouter = require("./routes/rider")
 
 
 app.use(cors());
@@ -21,5 +22,6 @@ app.get("/", (req, res) => {
 app.use("/users", userRoutes)
 app.use("/captains", captainRoutes)
 app.use("/maps", mapsRouter)
+app.use("/rides", rideRouter)
 
 module.exports = app;
