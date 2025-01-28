@@ -19,4 +19,12 @@ rideRouter.get('/get-fare',
     query('destination').isString().isLength({min: 3}).withMessage("Invalid destination address"),
     rideController.getFare)
 
+
+
+rideRouter.post('/confirm', auth.captainAuth,
+
+    body('rideId').isMongoId().withMessage('Invalid ride id'),
+    rideController.confirmRide
+)
+
 module.exports = rideRouter
