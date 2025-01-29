@@ -18,11 +18,11 @@ module.exports.createRide = async(req, res) => {
         res.status(201).json(ride)
 
         const pickupCoordinates = await mapsService.getAddressCordinate(pickup)
-     //    console.log(pickupCoordinates);
+        console.log(pickupCoordinates);
         
 
-        const captainsInRadius = await mapsService.getCaptainsInTheRadius(pickupCoordinates.ltd, pickupCoordinates.lng, 10);
-     //    console.log(captainsInRadius);
+        const captainsInRadius = await mapsService.getCaptainsInTheRadius(pickupCoordinates.ltd, pickupCoordinates.lng, 20);
+        console.log(captainsInRadius);
         
 
         ride.otp = "";
@@ -89,5 +89,30 @@ module.exports.confirmRide = async(req, res) => {
      }
      catch(err){
           return res.status(500).json({message: err.message})
+     }
+}
+
+module.exports.startRide = async(req, res) => {
+     const errors = validationResult(req);
+     if(!errors.isEmpty()){
+          return res.status(400).json({errors: errors.array()})
+     }
+
+     const {rideId, otp} = req.query;
+
+     try{
+
+          const ride = await rideService.startRide({rideId, otp, captain: req.captain})
+
+          sendMessageToSocketId(ride.user.socketId, {
+               event: 'ride-started',
+               data: ride
+          })
+
+          return res.status(200).json(ride)
+     }
+     catch(err){
+          return res.status(500).json({message: err.message})
+
      }
 }
